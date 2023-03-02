@@ -1,0 +1,82 @@
+.questions {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  align-self: flex-start;
+  margin: 0 1.6rem;
+  height: auto;
+
+  > li {
+    display: flex;
+    justify-content: space-between;
+
+    &:not(:last-of-type) {
+      border-bottom: 1px solid $color-border;
+    }
+
+    .information {
+      display: flex;
+      flex-direction: column;
+      row-gap: 0.8rem;
+      width: calc(100% - 10rem);
+
+      .question {
+        width: 100%;
+      }
+
+      .details {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        text-align: center;
+
+        li {
+          display: flex;
+          flex-direction: column;
+          row-gap: 0.5rem;
+          padding-bottom: 1rem;
+
+          > .label {
+            color: $color-boudoir-red;
+          }
+
+          > .value {
+            &.highlight {
+              width: 6rem;
+              color: $color-green;
+              border: 1px solid $color-green;
+              padding: 0.3rem 0;
+
+              &.accepted {
+                color: $color-white;
+                background-color: $color-green;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .user {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      row-gap: 0.6rem;
+      align-items: center;
+      width: 10rem;
+      text-align: center;
+
+      > .avatar {
+        width: 8rem;
+        height: 8rem;
+        overflow: hidden;
+        border-radius: 50%;
+
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+.search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  > input[type='search'] {
+    width: inherit;
+    padding: 0.8rem 1.6rem;
+    border: 1px solid $color-highlight;
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+
+    &:focus {
+      border: 1px solid $color-highlight;
+    }
+
+    & + button {
+      padding: 0.8rem 1.6rem;
+      background-color: $color-highlight;
+      border: 1px solid $color-highlight;
+      border-top-right-radius: 1rem;
+      border-bottom-right-radius: 1rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba($color: $color-highlight, $alpha: 0.7);
+      }
+    }
+  }
+}

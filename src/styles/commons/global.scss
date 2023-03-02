@@ -1,0 +1,121 @@
+* {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html {
+  width: 100%;
+  overflow-x: hidden;
+  font-size: 62.5%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: $color-base;
+  font-family: $font-body, sans-serif;
+  font-size: 1.6rem;
+  font-weight: $font-regular;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-heading;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  &:focus {
+    color: inherit;
+  }
+}
+
+form {
+  width: 100%;
+}
+
+input {
+  outline: none;
+}
+
+ul,
+li {
+  list-style-type: none;
+}
+
+input[type='search']::-webkit-search-decoration,
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-results-button,
+input[type='search']::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
+
+.heading {
+  font-family: $font-heading;
+  font-size: 2.4rem;
+  font-weight: $font-bold;
+  color: $color-base;
+
+  @include styleFor(tablet-and-up) {
+    font-size: 3.2rem;
+  }
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.red {
+  color: $color-red;
+}
+
+.loading {
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  border: 5px solid $color-white;
+  border-bottom-color: $color-boudoir-red;
+  border-radius: 50%;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.sticky {
+  display: flex;
+  flex-direction: column;
+  row-gap: 2rem;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: rgba($color: $color-white, $alpha: 1);
+  padding: 2rem 0;
+}

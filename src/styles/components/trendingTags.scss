@@ -1,0 +1,32 @@
+.trending-tags {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  width: 100%;
+
+  > .heading {
+    font-weight: 500;
+  }
+
+  > ul.list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem 1rem;
+    padding-top: 1rem;
+
+    > li {
+      border: 1px solid $color-highlight;
+      border-radius: 1rem;
+      padding: 0.6rem 1rem;
+      text-transform: capitalize;
+      cursor: pointer;
+
+      &.active,
+      &:hover {
+        background-color: $color-highlight;
+      }
+    }
+  }
+}
