@@ -22,8 +22,11 @@ const Questions = (props) => {
   useEffect(() => {
     if (tags[tagSelected]) {
       window.scrollTo(0, 0)
-      setPage(1)
-      getData(loadQuestions)
+      if (page > 1) {
+        setPage(1)
+      } else {
+        getData(loadQuestions)
+      }
     }
   }, [tags, tagSelected])
 
@@ -37,6 +40,8 @@ const Questions = (props) => {
   useEffect(() => {
     if (page > 1) {
       getData(loadMoreQuestions)
+    } else {
+      getData(loadQuestions)
     }
   }, [page])
 
@@ -53,66 +58,78 @@ const Questions = (props) => {
   }
 
   async function getData(callback) {
-    const url = `/api/questions?key=U4DMV*8nvpm3EOpvf69Rxw((&site=stackoverflow&page=${page}&pagesize=20&order=desc&sort=activity&tagged=${tags[tagSelected].name}&filter=default`
+    if (tags.length > 0) {
+      const url = `/api/questions?key=U4DMV*8nvpm3EOpvf69Rxw((&site=stackoverflow&page=${page}&pagesize=20&order=desc&sort=activity&tagged=${tags[tagSelected].name}&filter=default`
 
-    dispatch(loaderToggle(true))
+      dispatch(loaderToggle(true))
 
-    const data = await axios.getData(url)
+      const data = await axios.getData(url)
 
-    if (data) {
-      dispatch(loaderToggle(false))
+      if (data) {
+        dispatch(loaderToggle(false))
 
-      if (data.items) {
-        dispatch(callback(data.items))
+        if (data.items) {
+          dispatch(callback(data.items))
+        }
       }
     }
   }
+
+  const questionInformation = (question) => (
+    <div className="information">
+      <a href={question.link} target="_blank" className="question">
+        {question.title}
+      </a>
+      <ul className="details">
+        <li>
+          <div className="label">Score</div>
+          <div className={`value ${question.score < 0 && 'red'}`}>
+            {question.score}
+          </div>
+        </li>
+        <li>
+          <div className="label">Answers</div>
+          <div
+            className={`value ${question.answer_count > 0 && 'highlight'} ${
+              question.is_answered && 'accepted'
+            }`}
+          >
+            {question.answer_count}
+          </div>
+        </li>
+        <li>
+          <div className="label">Viewed</div>
+          <div className="value">{question.view_count}</div>
+        </li>
+      </ul>
+    </div>
+  )
+
+  const questionUser = (question) => (
+    <div className="user">
+      <div className="avatar">
+        <a href={question.owner.link} target="_blank">
+          <img src={question.owner.profile_image} />
+        </a>
+      </div>
+      <div className="user-name">
+        <a href={question.owner.link} target="_blank">
+          {question.owner.display_name}
+        </a>
+      </div>
+    </div>
+  )
 
   return (
     <>
       {questions.length > 0 && (
         <ul className="questions">
           {questions.map((question) => (
-            <li key={`${tagSelected}-${question.question_id}`}>
-              <div className="information">
-                <a href={question.link} target="_blank" className="question">
-                  {question.title}
-                </a>
-                <ul className="details">
-                  <li>
-                    <div className="label">Score</div>
-                    <div className={`value ${question.score < 0 && 'red'}`}>
-                      {question.score}
-                    </div>
-                  </li>
-                  <li>
-                    <div className="label">Answers</div>
-                    <div
-                      className={`value ${
-                        question.answer_count > 0 && 'highlight'
-                      } ${question.is_answered && 'accepted'}`}
-                    >
-                      {question.answer_count}
-                    </div>
-                  </li>
-                  <li>
-                    <div className="label">Viewed</div>
-                    <div className="value">{question.view_count}</div>
-                  </li>
-                </ul>
-              </div>
-              <div className="user">
-                <div className="avatar">
-                  <a href={question.owner.link} target="_blank">
-                    <img src={question.owner.profile_image} />
-                  </a>
-                </div>
-                <div className="user-name">
-                  <a href={question.owner.link} target="_blank">
-                    {question.owner.display_name}
-                  </a>
-                </div>
-              </div>
+            <li
+              key={`${tagSelected}-${question.question_id}-${question.last_edit_date}`}
+            >
+              {questionInformation(question)}
+              {questionUser(question)}
             </li>
           ))}
         </ul>
