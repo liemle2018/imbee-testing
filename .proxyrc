@@ -1,5 +1,0 @@
-{
-  "/api": {
-    "target": "https://api.stackexchange.com/2.3"
-  }
-}
