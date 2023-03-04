@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import axios from 'axios'
 
+import * as axios from '../../utils/axios-orders'
 import { loaderToggle } from '../App/appSlice'
 import { addTags, setTagSelected } from './tagsSlice'
 
@@ -13,42 +13,36 @@ const TrendingTags = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(loaderToggle(true))
+    const url =
+      '/api/tags?key=U4DMV*8nvpm3EOpvf69Rxw((&site=stackoverflow&page=1&pagesize=10&order=desc&sort=popular&filter=default'
 
-    axios
-      .get(
-        '/api/tags?key=U4DMV*8nvpm3EOpvf69Rxw((&site=stackoverflow&page=1&pagesize=10&order=desc&sort=popular&filter=default'
-      )
-      .then((res) => {
-        if (res.data.items) {
-          dispatch(addTags(res.data.items))
-          dispatch(loaderToggle(false))
-        }
-      })
-      .catch((error) => {
-        console.log(error.message)
-        dispatch(loaderToggle(false))
-      })
+    getDataHandle(url)
   }, [])
 
   useEffect(() => {
+    const url = `/api/tags?key=U4DMV*8nvpm3EOpvf69Rxw((&site=stackoverflow&page=1&pagesize=10&order=desc&sort=popular${
+      keyword.length > 0 ? `&inname=${keyword}` : ''
+    }&filter=default`
+
+    getDataHandle(url, true)
+  }, [keyword])
+
+  async function getDataHandle(url, isResetTagSelected = false) {
     dispatch(loaderToggle(true))
 
-    axios
-      .get(
-        `/api/tags?key=U4DMV*8nvpm3EOpvf69Rxw((&site=stackoverflow&page=1&pagesize=10&order=desc&sort=popular${
-          keyword.length > 0 ? `&inname=${keyword}` : ''
-        }&filter=default`
-      )
-      .then((res) => {
-        if (res.data.items) {
-          dispatch(addTags(res.data.items))
+    const data = await axios.getData(url)
+
+    if (data) {
+      dispatch(loaderToggle(false))
+
+      if (data.items) {
+        dispatch(addTags(data.items))
+        if (isResetTagSelected) {
           dispatch(setTagSelected(0))
-          dispatch(loaderToggle(false))
         }
-      })
-      .catch((error) => console.log(error.message))
-  }, [keyword])
+      }
+    }
+  }
 
   return (
     <div className="trending-tags">

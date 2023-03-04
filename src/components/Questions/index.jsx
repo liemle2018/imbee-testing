@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import axios from 'axios'
 
+import * as axios from '../../utils/axios-orders'
 import { loaderToggle } from '../App/appSlice'
 import { loadQuestions, loadMoreQuestions } from './questionsSlice'
 
@@ -52,20 +52,20 @@ const Questions = (props) => {
     setIsLoadMore(true)
   }
 
-  function getData(callback) {
+  async function getData(callback) {
+    const url = `/api/questions?key=U4DMV*8nvpm3EOpvf69Rxw((&site=stackoverflow&page=${page}&pagesize=20&order=desc&sort=activity&tagged=${tags[tagSelected].name}&filter=default`
+
     dispatch(loaderToggle(true))
-    axios
-      .get(
-        `/api/questions?key=U4DMV*8nvpm3EOpvf69Rxw((&site=stackoverflow&page=${page}&pagesize=20&order=desc&sort=activity&tagged=${tags[tagSelected].name}&filter=default`
-      )
-      .then((res) => {
-        dispatch(callback(res.data.items))
-        dispatch(loaderToggle(false))
-      })
-      .catch((error) => {
-        console.log(error.message)
-        dispatch(loaderToggle(false))
-      })
+
+    const data = await axios.getData(url)
+
+    if (data) {
+      dispatch(loaderToggle(false))
+
+      if (data.items) {
+        dispatch(callback(data.items))
+      }
+    }
   }
 
   return (
